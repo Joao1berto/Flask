@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+    {% set mensagens = get_flashed_messages() %} 
+    {% if mensagens %}     
+        {% for msg in mensagens %}
+            {{ msg }}
+        {% endfor %}
+    {% endif %}
+    <form action="/agendamento/save" method="post">
+        <label for="id_agendamento">Id_agendamento:</label>
+        <input type="text" name="id_agendamento" id="id_agendamento">
+        <label for="data">Data:</label>
+        <input type="date" name="data" id="data">
+        <label for="cliente">Cliente:</label>
+        <input type="text" name="cliente" id="cliente">
+        <button type="submit">Salvar</button>
+        <label for="servico">Serviço:</label>
+        <input type="text" name="servico" id="servico">
+    </form>
+
+{% endblock %}

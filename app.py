@@ -25,7 +25,7 @@
 from flask import Flask, render_template, request, flash, redirect
 from database import db
 from flask_migrate import Migrate
-from models import Usuario
+from models import Agendamento
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'JHEXDY'
@@ -48,73 +48,66 @@ def aula(nome = 'Maria', curso = 'Informáica', ano = 1):
     dados = {'nome': nome, 'curso': curso, 'ano': ano}
     return render_template('aula.html', dados_html=dados)
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
+@app.route('/agendamento')
+def agendamento():
+    u = Agendamento.query.all()
+    return render_template('agendamento_lista.html', dados = u)
 
-@app.route('/dados', methods=['POST'])
-def dados():
-    dados = request.form
-    return render_template('dados.html', dados = dados)
+@app.route('/agendamento/add')
+def agendamento_add():
+    return render_template('agendamento_add.html')
 
-@app.route('/usuario')
-def usuario():
-    u = Usuario.query.all()
-    return render_template('usuario_lista.html', dados = u)
-
-@app.route('/usuario/add')
-def usuario_add():
-    return render_template('usuario_add.html')
-
-@app.route('/usuario/save', methods=['POST'])
-def usuario_save():
-    nome = request.form.get('nome')
-    email = request.form.get('email')
-    idade = request.form.get('idade')
-    if nome and email and idade:
-        usuario = Usuario(nome, email, idade)
-        db.session.add(usuario)
+@app.route('/agendamento/save', methods=['POST'])
+def agendamento_save():
+    id = request.form.get('id')
+    data = request.form.get('data')
+    cliente = request.form.get('cliente')
+    servico = request.form.get('servico')
+    if data and cliente and servico:
+        agendamento = Agendamento(data, cliente, servico)
+        db.session.add(agendamento)
         db.session.commit()
-        flash('Usuário cadastrado com sucesso!!!')
-        return redirect('/usuario')
+        flash('Agendamento cadastrado com sucesso!!!')
+        return redirect('/agendamento')
     else:
         flash('Preencha todos os campos!!!')
-        return redirect('/usuario/add')
+        return redirect('/agendamento/add')
 
-@app.route('/usuario/remove/<int:id>')
-def usuario_remove(id):
+@app.route('/agendamento/remove/<int:id>')
+def agendamento_remove(id):
     if id > 0:
-        usuario = Usuario.query.get(id)
-        db.session.delete(usuario)
+        agendamento = Agendamento.query.get(id)
+        db.session.delete(agendamento)
         db.session.commit()
-        flash('Usuário removido com sucesso!!!')
-        return redirect('/usuario')
+        flash('Agendamento removido com sucesso!!!')
+        return redirect('/agendamento')
     else:
         flash('Caminho incorreto!!!')
-        return redirect('/usuario')
+        return redirect('/agendamento')
     
-@app.route('/usuario/edita/<int:id>')
-def usuario_edita(id):
-    usuario = Usuario.query.get(id)
-    return render_template('usuario_edita.html', dados = usuario)
+@app.route('/agendamento/edita/<int:id>')
+def agendamento_edita(id):
+    agendamento = Agendamento.query.get(id)
+    return render_template('agendamento_edita.html', dados = agendamento)
 
-@app.route('/usuario/editsave', methods=['POST'])
-def usuario_editasave():
+@app.route('/agendamento/editsave', methods=['POST'])
+def agendamento_editasave():
     id = request.form.get('id')
-    nome = request.form.get('nome')
-    email = request.form.get('email')
-    idade = request.form.get('idade')
-    if id and nome and email and idade:
-        usuario = Usuario.query.get(id)
-        usuario.nome = nome
-        usuario.email = email
-        usuario.idade = idade
+    data = request.form.get('data')
+    cliente = request.form.get('cliente')
+    servico = request.form.get('servico')
+    if id and data and cliente and servico:
+        agendamento = Agendamento.query.get(id)
+        agendamento.id = id
+        agendamento.data = data
+        agendamento.cliente = cliente
+        agendamento.servico = servico
         db.session.commit()
         flash('Dados atualizados com sucesso!!!')
-        return redirect('/usuario')
+        return redirect('/agendamento')
     else:
         flash('Faltando dados!!!')
-        return redirect('/usuario')
+        return redirect('/agendamento')
        
 if __name__ == '__main__':
     app.run()

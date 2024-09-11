@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+    {% set mensagens = get_flashed_messages() %} 
+    {% if mensagens %}     
+        {% for msg in mensagens %}
+            {{ msg }}
+        {% endfor %}
+    {% endif %}
+    <a href="/agendamento/add">+ Adicionar</a>
+    <table>
+        <tr>
+            <th>Data</th>
+            <th>Cliente</th>
+            <th>Serviço</th>
+            <th>Editar</th>
+            <th>Remover</th>
+        </tr>
+        {% for agendamento in dados %}
+        <tr>
+            <td>{{agendamento.data}}</td>
+            <td>{{agendamento.cliente}}</td>
+            <td>{{agendamento.servico}}</td>
+            <td>
+                <a href="/agendamento/edita/{{agendamento.id_agendamento}}">editar</a>
+            </td>
+            <td>
+                <a href="/agendamento/remove/{{agendamento.id_agendamento}}">remover</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table> 
+
+{% endblock %}
