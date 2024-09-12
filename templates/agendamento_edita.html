@@ -7,7 +7,7 @@
             {{ msg }}
         {% endfor %}
     {% endif %}
-    <form action="/agendamento/editsave" method="post">
+    <form action="/agendamento/editsave" method="post" class="formulario">
         <input type="hidden" name="id" value="{{dados.id_agendamento}}">
         <label for="id_agendamento">Id_agendamento:</label>
         <input type="text" name="id_agendamento" id="id_agendamento" value="{{dados.id_agendamento}}">

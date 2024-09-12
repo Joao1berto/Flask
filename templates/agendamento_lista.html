@@ -7,7 +7,7 @@
             {{ msg }}
         {% endfor %}
     {% endif %}
-    <a href="/agendamento/add">+ Adicionar</a>
+    <a href="/agendamento/add" class="adicionar">+ Adicionar</a>
     <table>
         <tr>
             <th>Data</th>
@@ -22,10 +22,10 @@
             <td>{{agendamento.cliente}}</td>
             <td>{{agendamento.servico}}</td>
             <td>
-                <a href="/agendamento/edita/{{agendamento.id_agendamento}}">editar</a>
+                <a href="/agendamento/edita/{{agendamento.id_agendamento}}" class = "editar">editar</a>
             </td>
             <td>
-                <a href="/agendamento/remove/{{agendamento.id_agendamento}}">remover</a>
+                <a href="/agendamento/remove/{{agendamento.id_agendamento}}" class = "remover">remover</a>
             </td>
         </tr>
         {% endfor %}
